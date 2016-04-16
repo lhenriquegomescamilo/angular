@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html ng-app="listTelephone">
+  <head>
+    <meta charset="utf-8">
+    <title>Working with angular</title>
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" media="screen" title="no title" charset="utf-8">
+    <style media="screen">
+      .jumbotron {
+        padding-left: 20px;
+        padding-right: 20px;
+        width: 400px;
+        text-align: center;
+        margin-top: 20px;
+        margin-left:  auto;
+        margin-right: auto;
+      }
+      .table{
+        text-align: left;
+        margin-top: 20px;
+      }
+      .form-control{
+        margin-bottom: 5px;
+      }
+    </style>
+    <script src="lib/angular/angular.js"></script>
+    <script>
+      angular.module("listTelephone",[]);
+      angular.module("listTelephone").controller("listTelephoneCtrl",function($scope){
+        $scope.app = "List Telephone";
+        $scope.contacts = [
+          {name: "Luis Henrique", phone:"(61) 9409-0599"},
+          {name: "Goms Camilo", phone:"(61) 4409-0599"},
+          {name: "Silvio Santos", phone:"(62) 4609-0599"},
+          {name: "Não vai ter golpe", phone:"(62) 42342-0599"},
+          {name: "I like moving, moving", phone:"(62) 42342-0399"},
+        ];
+
+        $scope.addContact = function(contact){
+          $scope.contacts.push(angular.copy(contact));
+          delete $scope.contact;
+
+        }
+      });
+    </script>
+  </head>
+  <body ng-controller="listTelephoneCtrl">
+    <div class="jumbotron">
+
+      <h3 ng-bind="app"></h3>
+      <table class="table table-striped">
+        <tr>
+          <th>Name</th>
+          <th>Phone</th>
+        </tr>
+        <tr ng-repeat="contact in contacts">
+            <td ng-bind="contact.name"></td>
+            <td ng-bind="contact.phone"></td>
+        </tr>
+      </table>
+      <hr>
+
+      <input class="form-control"
+             type="text"
+             ng-model="contact.name"
+             required="true"
+             requiredMessage="Please, enter your name"
+             placeholder="Enter your name">
+      </input>
+
+      <input class="form-control"
+             type="text"
+             ng-model="contact.phone"
+             required="true"
+             requiredMessage="Please, enter your number"
+             placeholder="Enter phone number">
+      </input>
+
+      <button class="btn btn-primary btn-block"
+              type="button"
+              name="button"
+              ng-click="addContact(contact)">
+              Add Contact
+      </button>
+    </div>
+  </body>
+</html>

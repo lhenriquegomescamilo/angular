@@ -1,0 +1,22 @@
+{
+  "name": "angular",
+  "description": "It is project to beginig working with angular",
+  "main": "",
+  "authors": [
+    "lcamilo"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.2.29",
+    "bootstrap": "^3.3.6"
+  }
+}
