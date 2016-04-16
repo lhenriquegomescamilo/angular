@@ -38,8 +38,11 @@
         $scope.addContact = function(contact){
           $scope.contacts.push(angular.copy(contact));
           delete $scope.contact;
-
-        }
+        };
+        $scope.disableAddButtonContact = function(contact){
+            if(contact == null ) return true;
+            return !contact.name || !contact.phone ;
+        };
       });
     </script>
   </head>
@@ -57,6 +60,7 @@
             <td ng-bind="contact.phone"></td>
         </tr>
       </table>
+
       <hr>
 
       <input class="form-control"
@@ -78,7 +82,8 @@
       <button class="btn btn-primary btn-block"
               type="button"
               name="button"
-              ng-click="addContact(contact)">
+              ng-click="addContact(contact)"
+              ng-disabled="disableAddButtonContact(contact)">
               Add Contact
       </button>
     </div>
