@@ -9,7 +9,7 @@
       .jumbotron {
         padding-left: 20px;
         padding-right: 20px;
-        width: 400px;
+        width: 800px;
         text-align: center;
         margin-top: 20px;
         margin-left:  auto;
@@ -39,11 +39,11 @@
       angular.module("listTelephone").controller("listTelephoneCtrl",function($scope){
         $scope.app = "List Telephone";
         $scope.contacts = [
-          {name: "Luis Henrique", phone:"(61) 9409-0599"},
-          {name: "Goms Camilo", phone:"(61) 4409-0599"},
-          {name: "Silvio Santos", phone:"(62) 4609-0599"},
-          {name: "Não vai ter golpe", phone:"(62) 42342-0599"},
-          {name: "I like moving, moving", phone:"(62) 42342-0399"},
+          {name: "Luis Henrique", date: new Date() ,phone:"(61) 9409-0599"},
+          {name: "Goms Camilo", date: new Date(),phone:"(61) 4409-0599"},
+          {name: "Silvio Santos", date: new Date(),phone:"(62) 4609-0599"},
+          {name: "Ana", date: new Date(),phone:"(62) 42342-0599"},
+          {name: "I like moving, moving", date: new Date(),phone:"(62) 42342-0399"},
         ];
 
         $scope.operators = [
@@ -77,26 +77,32 @@
           return contacts.some(function(contact){
             return contact.selected;
           });
+        };
 
-        }
+        $scope.orderBy = function(field){
+          $scope.criteriaOrderBy = field;
+          $scope.directOfOrder = !$scope.directOfOrder;
+        };
       });
     </script>
   </head>
   <body ng-controller="listTelephoneCtrl">
     <div class="jumbotron">
-
       <h3 ng-bind="app"></h3>
+      <input class="form-control" type="text" ng-model="criteriaOfSearch" placeholder="What do you searching?">
       <table class="table table-striped">
         <tr>
           <th><th>
-          <th>Name</th>
-          <th>Phone</th>
+          <th><a href="" ng-click="orderBy('name')">Name</a></th>
+          <th><a href="" ng-click="orderBy('phone')">Phone</a></th>
+          <th>Date</th>
           <th>Carrier</th>
         </tr>
-        <tr ng-class="{'selected bold': contact.selected}" ng-repeat="contact in contacts">
+        <tr ng-class="{'selected bold': contact.selected}" ng-repeat="contact in contacts | filter:criteriaOfSearch | orderBy:criteriaOrderBy:directOfOrder">
             <td><input type="checkbox" ng-model="contact.selected" /><td>
-            <td ng-bind="contact.name"></td>
+            <td ng-bind="contact.name | uppercase"></td>
             <td ng-bind="contact.phone"></td>
+            <td ng-bind="contact.date | date: 'dd/MM/yyyy HH:mm'"></td>
             <td ng-bind="contact.operator.name"></td>
         </tr>
       </table>
@@ -127,10 +133,10 @@
                   name="operator"
                   ng-required="true"
                   ng-model="contact.operator"
-                  ng-options="operator.name group by operator.category for operator in operators">
+                  ng-options="operator.name group by operator.category for operator in operators | filter:name">
                   <option value="">Select a carrier</option>
           </select>
-          <div ng-messages="contactForm.name.$error" class="alert alert-danger">
+          <div ng-show="contactForm.phone.$dirty" ng-messages="contactForm.name.$error" class="alert alert-danger">
             <div ng-message="required" >
               Please, insert your name.
             </div>
