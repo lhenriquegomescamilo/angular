@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Working with angular</title>
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" media="screen" title="no title" charset="utf-8">
+
     <style media="screen">
       .jumbotron {
         padding-left: 20px;
@@ -28,9 +29,12 @@
         font-weight: bold;
       }
     </style>
-    <script src="lib/angular/angular.js"></script>
+    <script type="text/javascript" src="lib/angular/angular.js"></script>
+    <script type="text/javascript" src="lib/angular-messages/angular-messages.js"></script>
     <script>
-      angular.module("listTelephone",[]);
+      angular.module("listTelephone",[
+        "ngMessages"
+      ]);
 
       angular.module("listTelephone").controller("listTelephoneCtrl",function($scope){
         $scope.app = "List Telephone";
@@ -55,6 +59,7 @@
         $scope.addContact = function(contact){
           $scope.contacts.push(angular.copy(contact));
           delete $scope.contact;
+          $scope.contactForm.$setPristine();
         };
 
         $scope.disableButtonAddContact = function(contact){
@@ -96,8 +101,6 @@
         </tr>
       </table>
       <hr>
-      É válido : {{contactForm.$valid}}
-      É inválido : {{contactForm.$invalid}}
       <form name="contactForm">
 
           <input class="form-control"
@@ -105,7 +108,8 @@
                  name="name"
                  placeholder="Enter your name"
                  ng-model="contact.name"
-                 ng-required="true">
+                 ng-required="true"
+                 ng-minlength="10">
           </input>
 
           <input class="form-control"
@@ -113,7 +117,10 @@
                  name="phone"
                  placeholder="Enter phone number"
                  ng-model="contact.phone"
-                 ng-required="true">
+                 ng-required="true"
+                 ng-minlength="10"
+                 ng-maxlength="12"
+                 ng-pattern="/^\d{4,5}-\d{4}$/">
           </input>
 
           <select class="form-control"
@@ -123,15 +130,25 @@
                   ng-options="operator.name group by operator.category for operator in operators">
                   <option value="">Select a carrier</option>
           </select>
+          <div ng-messages="contactForm.name.$error" class="alert alert-danger">
+            <div ng-message="required" >
+              Please, insert your name.
+            </div>
 
-          <div ng-show="contactForm.name.$invalid" class="alert alert-danger">
-            Please, insert your name.
+            <div ng-message="minlength">
+              O field name, should minimum 10 chars
+            </div>
           </div>
-          <div ng-show="contactForm.phone.$invalid" class="alert alert-danger">
+
+          <div ng-show="contactForm.phone.$error.required && contactForm.phone.$dirty" class="alert alert-danger">
             Please, insert your phonenumber.
           </div>
-          <div ng-show="contactForm.operator.$invalid" class="alert alert-danger">
-            Please, insert your carrier.
+
+          <div ng-show="contactForm.phone.$error.pattern" class="alert alert-danger">
+            The field phone-number should have the format DDDD-DDDD
+          </div>
+          <div ng-show="contactForm.operator.$invalid && contactForm.operator.$dirty " class="alert alert-danger">
+            Please, insert your carriere.
           </div>
         </form>
 
