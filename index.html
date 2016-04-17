@@ -21,10 +21,17 @@
       .form-control{
         margin-bottom: 5px;
       }
+      .selected{
+        background-color: yellow;
+      }
+      .bold{
+        font-weight: bold;
+      }
     </style>
     <script src="lib/angular/angular.js"></script>
     <script>
       angular.module("listTelephone",[]);
+
       angular.module("listTelephone").controller("listTelephoneCtrl",function($scope){
         $scope.app = "List Telephone";
         $scope.contacts = [
@@ -35,9 +42,36 @@
           {name: "I like moving, moving", phone:"(62) 42342-0399"},
         ];
 
+        $scope.operators = [
+          {name:"Oi",code:14,category:"Cell"},
+          {name:"Tim",code:15,category:"Cell"},
+          {name:"Vivo",code:16,category:"Cell"},
+          {name:"Claro",code:17,category:"Cell"},
+          {name:"GVT",code:19,category:"Fixo"},
+          {name:"NET",code:20,category:"Fixo"},
+          {name:"Embratel",code:21,category:"Fixo"},
+        ];
+
         $scope.addContact = function(contact){
           $scope.contacts.push(angular.copy(contact));
           delete $scope.contact;
+        };
+
+        $scope.disableButtonAddContact = function(contact){
+            if(contact == null || contact.operator == null) return true;
+            return !contact.name || !contact.phone || !contact.operator;
+        };
+
+        $scope.removeContactSelected = function(contacts){
+              $scope.contacts = contacts.filter(function(contact){
+                if(!contact.selected) return contact;
+              });
+        };
+
+        $scope.isContactSelected = function(contacts){
+          return contacts.some(function(contact){
+            return contact.selected;
+          });
 
         }
       });
@@ -49,39 +83,73 @@
       <h3 ng-bind="app"></h3>
       <table class="table table-striped">
         <tr>
+          <th><th>
           <th>Name</th>
           <th>Phone</th>
+          <th>Carrier</th>
         </tr>
-        <tr ng-repeat="contact in contacts">
+        <tr ng-class="{'selected bold': contact.selected}" ng-repeat="contact in contacts">
+            <td><input type="checkbox" ng-model="contact.selected" /><td>
             <td ng-bind="contact.name"></td>
             <td ng-bind="contact.phone"></td>
+            <td ng-bind="contact.operator.name"></td>
         </tr>
       </table>
-      
       <hr>
+      É válido : {{contactForm.$valid}}
+      É inválido : {{contactForm.$invalid}}
+      <form name="contactForm">
 
-      <input class="form-control"
-             type="text"
-             ng-model="contact.name"
-             required="true"
-             requiredMessage="Please, enter your name"
-             placeholder="Enter your name">
-      </input>
+          <input class="form-control"
+                 type="text"
+                 name="name"
+                 placeholder="Enter your name"
+                 ng-model="contact.name"
+                 ng-required="true">
+          </input>
 
-      <input class="form-control"
-             type="text"
-             ng-model="contact.phone"
-             required="true"
-             requiredMessage="Please, enter your number"
-             placeholder="Enter phone number">
-      </input>
+          <input class="form-control"
+                 type="text"
+                 name="phone"
+                 placeholder="Enter phone number"
+                 ng-model="contact.phone"
+                 ng-required="true">
+          </input>
 
-      <button class="btn btn-primary btn-block"
-              type="button"
-              name="button"
-              ng-click="addContact(contact)">
-              Add Contact
-      </button>
+          <select class="form-control"
+                  name="operator"
+                  ng-required="true"
+                  ng-model="contact.operator"
+                  ng-options="operator.name group by operator.category for operator in operators">
+                  <option value="">Select a carrier</option>
+          </select>
+
+          <div ng-show="contactForm.name.$invalid" class="alert alert-danger">
+            Please, insert your name.
+          </div>
+          <div ng-show="contactForm.phone.$invalid" class="alert alert-danger">
+            Please, insert your phonenumber.
+          </div>
+          <div ng-show="contactForm.operator.$invalid" class="alert alert-danger">
+            Please, insert your carrier.
+          </div>
+        </form>
+
+        <button class="btn btn-primary btn-block"
+                type="button"
+                name="button"
+                ng-click="addContact(contact)"
+                ng-disabled="contactForm.$invalid">
+                Add Contact
+        </button>
+
+        <button class="btn btn-danger btn-block"
+                type="button"
+                name="button"
+                ng-click="removeContactSelected(contacts)"
+                ng-disabled="!isContactSelected(contacts)">
+                Remove Contact
+        </button>
     </div>
   </body>
 </html>
