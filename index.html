@@ -4,91 +4,11 @@
     <meta charset="utf-8">
     <title>Working with angular</title>
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" media="screen" title="no title" charset="utf-8">
-
-    <style media="screen">
-      .jumbotron {
-        padding-left: 20px;
-        padding-right: 20px;
-        width: 800px;
-        text-align: center;
-        margin-top: 20px;
-        margin-left:  auto;
-        margin-right: auto;
-      }
-      .table{
-        text-align: left;
-        margin-top: 20px;
-      }
-      .form-control{
-        margin-bottom: 5px;
-      }
-      .selected{
-        background-color: yellow;
-      }
-      .bold{
-        font-weight: bold;
-      }
-    </style>
+    <link rel="stylesheet" href="app/css/app.css" media="screen" title="no title" charset="utf-8">
     <script type="text/javascript" src="lib/angular/angular.js"></script>
     <script type="text/javascript" src="lib/angular-messages/angular-messages.js"></script>
-    <script>
-      angular.module("listTelephone",[
-        "ngMessages"
-      ]);
-
-      angular.module("listTelephone").controller("listTelephoneCtrl",function($scope,$http){
-        $scope.app = "List Telephone";
-        $scope.contacts = [];
-
-        $scope.operators = [];
-        var readContacts = function(){
-            $http.get("http://localhost:3412/contacts").success(function(data,status){
-                  $scope.contacts = data;
-            });
-        };
-
-        var readOperators = function(){
-          $http.get("http://localhost:3412/operators").success(function(data,status){
-              $scope.operators = data;
-          });
-        }
-
-        $scope.addContact = function(contact){
-          //$scope.contacts.push(angular.copy(contact));
-          console.log(contact);
-          $http.post("http://localhost:3412/addContact",contact).success(function (data) {
-
-          });
-          delete $scope.contact;
-          $scope.contactForm.$setPristine();
-        };
-
-        $scope.disableButtonAddContact = function(contact){
-            if(contact == null || contact.operator == null) return true;
-            return !contact.name || !contact.phone || !contact.operator;
-        };
-
-        $scope.removeContactSelected = function(contacts){
-              $scope.contacts = contacts.filter(function(contact){
-                if(!contact.selected) return contact;
-              });
-        };
-
-        $scope.isContactSelected = function(contacts){
-          return contacts.some(function(contact){
-            return contact.selected;
-          });
-        };
-
-        $scope.orderBy = function(field){
-          $scope.criteriaOrderBy = field;
-          $scope.directOfOrder = !$scope.directOfOrder;
-        };
-        // call function http
-        readContacts();
-        readOperators();
-      });
-    </script>
+    <script type="text/javascript" src="app/ app.js"></script>
+    <script type="text/javascript" src="app/js/controllers/listPhoneNumber.js"></script>
   </head>
   <body ng-controller="listTelephoneCtrl">
     <div class="jumbotron">
@@ -104,7 +24,7 @@
         </tr>
         <tr ng-class="{'selected bold': contact.selected}" ng-repeat="contact in contacts | filter:criteriaOfSearch | orderBy:criteriaOrderBy:directOfOrder">
             <td><input type="checkbox" ng-model="contact.selected" /><td>
-            <td ng-bind="contact.name | uppercase"></td>
+            <td ng-bind="contact.name"></td>
             <td ng-bind="contact.phone"></td>
             <td ng-bind="contact.date | date: 'dd/MM/yyyy HH:mm'"></td>
             <td ng-bind="contact.operator.name"></td>
@@ -158,12 +78,12 @@
             Please, insert your carriere.
           </div>
         </form>
-        {{contactForm.$invalid}}
+
         <button class="btn btn-primary btn-block"
                 type="button"
                 name="button"
                 ng-click="addContact(contact)"
-                ng-disabled="false">
+                ng-disabled="contactForm.$invalid">
                 Add Contact
         </button>
 

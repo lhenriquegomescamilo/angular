@@ -1,7 +1,11 @@
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser');
 
 app.use(express.static(__dirname+"/public"));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 var contacts = [
     {name: "Luis Henrique", date: new Date(), phone:"(61) 9409-0599", operators : {name : "Oi", code: 14, category: "Cell"}},
@@ -39,5 +43,9 @@ app.get("/operators",function(req,res){
 });
 
 app.post("/addContact",function(req,res,next){
-    console.log(req.body);
+    var contact  = req.body;
+    contact.date = new Date();
+    console.log(contact);
+    contacts.push(req.body);
+    res.send("true");
 });
