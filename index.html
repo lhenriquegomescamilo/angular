@@ -36,7 +36,7 @@
         "ngMessages"
       ]);
 
-      angular.module("listTelephone").controller("listTelephoneCtrl",function($scope){
+      angular.module("listTelephone").controller("listTelephoneCtrl",function($scope,$http){
         $scope.app = "List Telephone";
         $scope.contacts = [
           {name: "Luis Henrique", date: new Date() ,phone:"(61) 9409-0599"},
@@ -55,6 +55,10 @@
           {name:"NET",code:20,category:"Fixo"},
           {name:"Embratel",code:21,category:"Fixo"},
         ];
+
+        var readContacts = function(){
+            $http.get("");
+        };
 
         $scope.addContact = function(contact){
           $scope.contacts.push(angular.copy(contact));
