@@ -18,7 +18,6 @@
   "dependencies": {
     "angular": "1.2.29",
     "bootstrap": "^3.3.6",
-    "angular-messages": "1.5.3",
-     "express": "^3.x"
+    "angular-messages": "1.5.3"
   }
 }

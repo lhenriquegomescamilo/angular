@@ -1,15 +1,13 @@
-var express = require("express");
-
+var express = require('express');
 var app = express();
 
 app.use(express.static(__dirname+"/public"));
-app.use(express.bodyParser());
 
 var contacts = [
-    {name: "Luis Henrique", date: new Date(), phone:"(61) 9409-0599", carrier : {name : "Oi", code: 14, category: "Cell"}},
-    {name: "Silvio Santos", date: new Date(), phone:"(62) 4609-0599", carrier : {name:"Tim", code: 41, category:"Cell"}},
-    {name: "Goms Camilo", date: new Date(), phone:"(61) 4409-0599", carrier : {name:"Claro", code: 15, category:"Cell"}},
-    {name: "Ana", date: new Date(), phone:"(62) 42342-0599", carrier : {name:"Brasil Telecon", code: 21, category:"Cell"}}
+    {name: "Luis Henrique", date: new Date(), phone:"(61) 9409-0599", operators : {name : "Oi", code: 14, category: "Cell"}},
+    {name: "Silvio Santos", date: new Date(), phone:"(62) 4609-0599", operators : {name:"Tim", code: 41, category:"Cell"}},
+    {name: "Goms Camilo", date: new Date(), phone:"(61) 4409-0599", operators : {name:"Claro", code: 15, category:"Cell"}},
+    {name: "Ana", date: new Date(), phone:"(62) 42342-0599", operators : {name:"Brasil Telecon", code: 21, category:"Cell"}}
 ];
 
 var  operators = [
@@ -31,11 +29,15 @@ app.all('*',function(req,res,next){
   next();
 });
 
-app.get("/contacts",function(reqmres){
+app.get("/contacts",function(req, res){
     res.json(contacts);
 });
 
 
 app.get("/operators",function(req,res){
   res.json(operators);
+});
+
+app.post("/addContact",function(req,res,next){
+    console.log(req.body);
 });

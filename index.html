@@ -38,30 +38,27 @@
 
       angular.module("listTelephone").controller("listTelephoneCtrl",function($scope,$http){
         $scope.app = "List Telephone";
-        $scope.contacts = [
-          {name: "Luis Henrique", date: new Date() ,phone:"(61) 9409-0599"},
-          {name: "Goms Camilo", date: new Date(),phone:"(61) 4409-0599"},
-          {name: "Silvio Santos", date: new Date(),phone:"(62) 4609-0599"},
-          {name: "Ana", date: new Date(),phone:"(62) 42342-0599"},
-          {name: "I like moving, moving", date: new Date(),phone:"(62) 42342-0399"},
-        ];
+        $scope.contacts = [];
 
-        $scope.operators = [
-          {name:"Oi",code:14,category:"Cell"},
-          {name:"Tim",code:15,category:"Cell"},
-          {name:"Vivo",code:16,category:"Cell"},
-          {name:"Claro",code:17,category:"Cell"},
-          {name:"GVT",code:19,category:"Fixo"},
-          {name:"NET",code:20,category:"Fixo"},
-          {name:"Embratel",code:21,category:"Fixo"},
-        ];
-
+        $scope.operators = [];
         var readContacts = function(){
-            $http.get("");
+            $http.get("http://localhost:3412/contacts").success(function(data,status){
+                  $scope.contacts = data;
+            });
         };
 
+        var readOperators = function(){
+          $http.get("http://localhost:3412/operators").success(function(data,status){
+              $scope.operators = data;
+          });
+        }
+
         $scope.addContact = function(contact){
-          $scope.contacts.push(angular.copy(contact));
+          //$scope.contacts.push(angular.copy(contact));
+          console.log(contact);
+          $http.post("http://localhost:3412/addContact",contact).success(function (data) {
+
+          });
           delete $scope.contact;
           $scope.contactForm.$setPristine();
         };
@@ -87,6 +84,9 @@
           $scope.criteriaOrderBy = field;
           $scope.directOfOrder = !$scope.directOfOrder;
         };
+        // call function http
+        readContacts();
+        readOperators();
       });
     </script>
   </head>
@@ -144,16 +144,13 @@
             <div ng-message="required" >
               Please, insert your name.
             </div>
-
             <div ng-message="minlength">
               O field name, should minimum 10 chars
             </div>
           </div>
-
           <div ng-show="contactForm.phone.$error.required && contactForm.phone.$dirty" class="alert alert-danger">
             Please, insert your phonenumber.
           </div>
-
           <div ng-show="contactForm.phone.$error.pattern" class="alert alert-danger">
             The field phone-number should have the format DDDD-DDDD
           </div>
@@ -161,12 +158,12 @@
             Please, insert your carriere.
           </div>
         </form>
-
+        {{contactForm.$invalid}}
         <button class="btn btn-primary btn-block"
                 type="button"
                 name="button"
                 ng-click="addContact(contact)"
-                ng-disabled="contactForm.$invalid">
+                ng-disabled="false">
                 Add Contact
         </button>
 
