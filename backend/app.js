@@ -26,7 +26,7 @@ var  operators = [
 
 app.listen(process.env.PORT || 3412);
 
-app.all('*',function(req,res,next){
+app.all('*',function(req,res){
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -42,7 +42,7 @@ app.get("/operators",function(req,res){
   res.json(operators);
 });
 
-app.post("/addContact",function(req,res,next){
+app.post("/addContact",function(req,res){
     var contact  = req.body;
     contact.date = new Date();
     console.log(contact);

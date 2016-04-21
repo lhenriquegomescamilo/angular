@@ -1,10 +1,10 @@
-angular.module("listTelephone").controller("listTelephoneCtrl",function($scope,$http){
+angular.module("listTelephone").controller("listTelephoneCtrl",function($scope,$http, contactsAPI){
   $scope.app = "List Telephone";
   $scope.contacts = [];
 
   $scope.operators = [];
   var readContacts = function(){
-      $http.get("http://localhost:3412/contacts").success(function(data,status){
+      contactsAPI.getContacts().success(function(data,status){
             $scope.contacts = data;
       });
   };
@@ -16,9 +16,8 @@ angular.module("listTelephone").controller("listTelephoneCtrl",function($scope,$
   }
 
   $scope.addContact = function(contact){
-    console.log(contact);
-    console.log(contact);
-    $http.post("http://localhost:3412/addContact",contact).success(function (data) {
+
+    contactsAPI.save(contact).success(function (data) {
         delete $scope.contact;
         $scope.contactForm.$setPristine();
         readContacts();
