@@ -1,7 +1,7 @@
-angular.module("listTelephone").controller("listTelephoneCtrl",function($scope,contactsAPI,operatorsAPI){
+angular.module("listTelephone").controller("listTelephoneCtrl",function($scope,contactsAPI,operatorsAPI,serialGenerator){
   $scope.app = "List Telephone";
+  console.log(serialGenerator.generate());
   $scope.contacts = [];
-
   $scope.operators = [];
   var readContacts = function(){
       contactsAPI.getContacts().success(function(data,status){
@@ -16,7 +16,7 @@ angular.module("listTelephone").controller("listTelephoneCtrl",function($scope,c
   }
 
   $scope.addContact = function(contact){
-
+    contact.serial = serialGenerator.generate();
     contactsAPI.save(contact).success(function (data) {
         delete $scope.contact;
         $scope.contactForm.$setPristine();
