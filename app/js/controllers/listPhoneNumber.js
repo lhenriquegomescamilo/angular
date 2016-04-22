@@ -6,6 +6,8 @@ angular.module("listTelephone").controller("listTelephoneCtrl",function($scope,c
   var readContacts = function(){
       contactsAPI.getContacts().success(function(data,status){
             $scope.contacts = data;
+      }).error(function(data, status){
+        $scope.error = "Não possível carregar os dados";
       });
   };
 

@@ -5,6 +5,7 @@
     <title>Working with angular</title>
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="app/css/app.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="app/css/ui.css"  media="screen" title="no title" charset="utf-8">
     <script type="text/javascript" src="lib/angular/angular.js"></script>
     <script type="text/javascript" src="lib/angular-messages/angular-messages.js"></script>
     <script type="text/javascript" src="app/app.js"></script>
@@ -16,11 +17,17 @@
     <script type="text/javascript" src="app/js/config/serialGeneratorConfig.js"></script>
     <script type="text/javascript" src="app/js/filters/nameFilter.js"></script>
     <script type="text/javascript" src="app/js/filters/ellipsisFilter.js"></script>
+    <script type="text/javascript" src="app/js/directives/uiAlertDirective.js"></script>
 
   </head>
   <body ng-controller="listTelephoneCtrl">
     <div class="jumbotron">
       <h3 ng-bind="app"></h3>
+
+      <ui-alert title="Ops, aconteceu um problema acredita!">
+        {{error}}        
+      </ui-alert>
+
       <input class="form-control" type="text" ng-model="criteriaOfSearch" placeholder="What do you searching?">
       <table class="table table-striped">
         <tr>
@@ -34,7 +41,7 @@
         <tr ng-class="{'selected bold': contact.selected}" ng-repeat="contact in contacts | filter:criteriaOfSearch | orderBy:criteriaOrderBy:directOfOrder">
             <td><input type="checkbox" ng-model="contact.selected" /><td>
               <td ng-bind="contact.serial"></td>
-            <td ng-bind="contact.name | name | ellipsis:20"></td>
+            <td ng-bind="contact.name | name | ellipsis:10"></td>
             <td ng-bind="contact.phone"></td>
             <td ng-bind="contact.date | date: 'dd/MM/yyyy HH:mm'"></td>
             <td ng-bind="contact.operator.name"></td>
