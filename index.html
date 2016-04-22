@@ -14,6 +14,8 @@
     <script type="text/javascript" src="app/js/value/configValue.js"></script>
     <script type="text/javascript" src="app/js/services/serialGeneratorService.js"></script>
     <script type="text/javascript" src="app/js/config/serialGeneratorConfig.js"></script>
+    <script type="text/javascript" src="app/js/filters/nameFilter.js"></script>
+    <script type="text/javascript" src="app/js/filters/ellipsisFilter.js"></script>
 
   </head>
   <body ng-controller="listTelephoneCtrl">
@@ -32,7 +34,7 @@
         <tr ng-class="{'selected bold': contact.selected}" ng-repeat="contact in contacts | filter:criteriaOfSearch | orderBy:criteriaOrderBy:directOfOrder">
             <td><input type="checkbox" ng-model="contact.selected" /><td>
               <td ng-bind="contact.serial"></td>
-            <td ng-bind="contact.name"></td>
+            <td ng-bind="contact.name | name | ellipsis:20"></td>
             <td ng-bind="contact.phone"></td>
             <td ng-bind="contact.date | date: 'dd/MM/yyyy HH:mm'"></td>
             <td ng-bind="contact.operator.name"></td>
