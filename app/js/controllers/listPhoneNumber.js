@@ -1,4 +1,4 @@
-angular.module("listTelephone").controller("listTelephoneCtrl",function($scope,$http, contactsAPI){
+angular.module("listTelephone").controller("listTelephoneCtrl",function($scope,contactsAPI,operatorsAPI){
   $scope.app = "List Telephone";
   $scope.contacts = [];
 
@@ -10,7 +10,7 @@ angular.module("listTelephone").controller("listTelephoneCtrl",function($scope,$
   };
 
   var readOperators = function(){
-    $http.get("http://localhost:3412/operators").success(function(data,status){
+    operatorsAPI.getOperators().success(function(data,status){
         $scope.operators = data;
     });
   }
