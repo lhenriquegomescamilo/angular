@@ -18,6 +18,7 @@
     <script type="text/javascript" src="app/js/filters/nameFilter.js"></script>
     <script type="text/javascript" src="app/js/filters/ellipsisFilter.js"></script>
     <script type="text/javascript" src="app/js/directives/uiAlertDirective.js"></script>
+    <script type="text/javascript" src="app/js/directives/uiDate.js"></script>
 
   </head>
   <body ng-controller="listTelephoneCtrl">
@@ -57,6 +58,15 @@
                  ng-model="contact.name"
                  ng-required="true"
                  ng-minlength="10">
+          </input>
+
+          <input class="form-control"
+                 type="text"
+                 name="date"
+                 placeholder="Date"
+                 ng-model="contact.date"
+                 ng-required="true"
+                 ui-date>
           </input>
 
           <input class="form-control"

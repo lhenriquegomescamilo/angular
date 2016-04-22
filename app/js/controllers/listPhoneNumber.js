@@ -1,6 +1,5 @@
 angular.module("listTelephone").controller("listTelephoneCtrl",function($scope,contactsAPI,operatorsAPI,serialGenerator){
   $scope.app = "List Telephone";
-  console.log(serialGenerator.generate());
   $scope.contacts = [];
   $scope.operators = [];
   var readContacts = function(){
